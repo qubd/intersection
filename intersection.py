@@ -1,3 +1,8 @@
+#Tools for basic polynomial arithmetic and computation of intersection multiplicities
+#for polynomial curves over the rationals at rational points.
+
+#Brendan Cordy, 2018
+
 from fractions import Fraction
 
 class AffineCurve(object):
