@@ -83,6 +83,9 @@ class AffineCurve(object):
     def constant_term(self):
         return self.coeffs[0][0]
 
+    def is_identically_zero(self):
+        return self.degree() == 0 and self.constant_term() == 0
+
     #Find the largest power of x that divides the polynomial.
     def x_multiplicity(self):
         lowest_exp = self.degree()
@@ -203,11 +206,15 @@ def I_0(F, G):
     #If either curve does not pass through the origin, the multiplicity is zero.
     if F.constant_term() != 0 or G.constant_term() != 0:
         return 0
+    #If one curve is identically zero, the multiplicity is infinity.
+    if F.is_identically_zero() or G.is_identically_zero():
+        return "Infinite"
+    #If both curves pass through the origin and neither is identically zero.
     else:
         #Find the coefficient and power of the largest term of each polynomial which
         #is independent of y.
         a, m = F.largest_term_without_y()
-        b, n = G.largest_term_without_y()
+        b, n = G.largest_term_without_y() 
         #If both polynomials contain a term independent of y, say ax^m in F and bx^n
         #in G, with m >= n, I(F,G) = I(F - (b/a)x^(m-n)G, G), and F - (b/a)x^(m-n)G
         #has smaller degree than F.
