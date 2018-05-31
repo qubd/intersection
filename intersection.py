@@ -86,13 +86,20 @@ class AffineCurve(object):
     def is_identically_zero(self):
         return self.degree() == 0 and self.constant_term() == 0
 
+    def contains(self,(x,y)):
+        total = 0
+        for i, deg_i_coeffs in enumerate(self.coeffs):
+            for j, coeff in enumerate(deg_i_coeffs):
+                #Note i - j is the power on x in the term whose coefficient
+                #is self.coeffs[i][j], and j is the power of y.
+                total += coeff * (x ** (i - j)) * (y ** j)
+        return total == 0
+
     #Find the largest power of x that divides the polynomial.
     def x_multiplicity(self):
         lowest_exp = self.degree()
         for i, deg_i_coeffs in enumerate(self.coeffs):
             for j, coeff in enumerate(deg_i_coeffs):
-                #Note i - j is the power on x in the term whose coefficient
-                #is self.coeffs[i][j].
                 if coeff != 0 and i - j < lowest_exp:
                     lowest_exp = i - j
         return lowest_exp
@@ -102,8 +109,6 @@ class AffineCurve(object):
         lowest_exp = self.degree()
         for i, deg_i_coeffs in enumerate(self.coeffs):
             for j, coeff in enumerate(deg_i_coeffs):
-                #Note j is the power on y in the term whose coefficient
-                #is self.coeffs[i][j].
                 if coeff != 0 and j < lowest_exp:
                     lowest_exp = j
         return lowest_exp
@@ -214,7 +219,7 @@ def I_0(F, G):
         #Find the coefficient and power of the largest term of each polynomial which
         #is independent of y.
         a, m = F.largest_term_without_y()
-        b, n = G.largest_term_without_y() 
+        b, n = G.largest_term_without_y()
         #If both polynomials contain a term independent of y, say ax^m in F and bx^n
         #in G, with m >= n, I(F,G) = I(F - (b/a)x^(m-n)G, G), and F - (b/a)x^(m-n)G
         #has smaller degree than F.
