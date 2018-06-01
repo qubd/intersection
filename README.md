@@ -48,8 +48,10 @@ True
 Lastly, we can compute the intersection multiplicity of two curves at the origin, or at any other rational point in the plane.
 
 ```
->>> I_0(F,G)
+>>> I_0(f,g)
 2
->>> I(F,G,(1,1))
+>>> I(f,g,(1,1))
 0
+>>> I_0(f,f)
+'Infinite'
 ```
